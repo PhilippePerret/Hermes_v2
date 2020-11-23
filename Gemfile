@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem "rspec"
+gem "json"
 gem "mysql2"
 gem 'kramdown'
 gem 'tty-prompt'

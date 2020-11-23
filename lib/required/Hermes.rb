@@ -6,17 +6,31 @@
 class Hermes
 class << self
 def init
-  log("--> init")
-  log("<-- init")
+  _ "--> init"
+  if ENV['TESTS_REPONSES']
+    TESTS_REPONSES.clear
+    JSON.parse(ENV['TESTS_REPONSES']).each{|e| TESTS_REPONSES << e}
+  end
+  _ "= TESTS_REPONSES: #{TESTS_REPONSES.inspect}"
+  _ "<-- init"
 end #/ init
 def run
-  log("--> run")
-  define_story || return
-  log("<-- run")
+  _ "--> run"
+  case TESTS_REPONSES.shift || define_what_to_do
+  when 0 then return
+  when 1
+    require_module 'Story'
+    Story.init_run_and_finish
+  when 2
+    require_module 'Source'
+    Source.init_run_and_finish
+  end
+  _ "<-- run"
 end #/ run
 def finish
-  log("--> finish")
-  log("<-- finish")
+  _ "--> finish"
+  _ "<-- finish"
+  _ "<-- END"
 end #/ finish
 # ---------------------------------------------------------------------
 #
@@ -24,18 +38,13 @@ end #/ finish
 #
 # ---------------------------------------------------------------------
 
-def define_story
-  clear
-  puts "Nous allons définir quelques éléments, mais tu peux aussi choisir le mode entièrement aléatoire.".bleu
-  choix = TEST_CHOIX.shift || Q.select("Choisis le type de protagoniste voulu") do |q|
-    q.choices TYPES_PROTAGONISTES << {name:"Renoncer", value: :nil}
-    q.per_page TYPES_PROTAGONISTES.count + 1
+def define_what_to_do
+  # clear
+  Q.select("Que faire ?") do |q|
+    q.choices [{name:"Construire une histoire", value: 1}, {name:"Entrer des données", value: 2}, {name:"Renoncer", value: 0}]
+    q.per_page 3
   end
-  return false if choix == :nil
-end #/ define_story
-
-
-
+end #/ define_what_to_do
 end # /<< self
 
 TYPES_PROTAGONISTES = [

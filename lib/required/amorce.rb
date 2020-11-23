@@ -6,6 +6,7 @@
 =end
 
 require_relative './Log'
+_("--> START")
 
 APP_FOLDER = File.dirname(File.dirname(__dir__))
 log "APP_FOLDER : #{APP_FOLDER}"

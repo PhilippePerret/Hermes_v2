@@ -3,6 +3,7 @@
 def log(msg, context = nil)
   Log.add(msg, context)
 end #/ log
+alias :_ :log
 
 class Log
 class << self

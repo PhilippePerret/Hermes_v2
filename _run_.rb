@@ -6,12 +6,12 @@
 =end
 begin
   # Librairie minimale de départ
-  require './lib/required/amorce'
-  log("--> run")
-  Hermes.init
-  Hermes.run
-  Hermes.finish
-  log("<-- run")
+  Dir.chdir(__dir__) do
+    require './lib/required/amorce'
+    Hermes.init
+    Hermes.run
+    Hermes.finish
+  end
 rescue Exception => e
   # TODO
   # Faire un état des lieux de l'erreur
